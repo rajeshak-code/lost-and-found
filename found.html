@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Found Items - Lost & Found Portal</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Navbar (identical across pages) -->
+  <header>
+    <div class="container nav">
+      <a href="index.html" class="nav-brand">Lost & Found Portal</a>
+      
+      <input type="checkbox" id="nav-toggle" class="nav-toggle">
+      <label for="nav-toggle" class="nav-toggle-label">☰</label>
+
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="lost.html">Lost Items</a></li>
+        <li><a href="found.html">Found Items</a></li>
+        <li><a href="report.html">Report Item</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Page Header -->
+  <section class="hero">
+    <div class="container">
+      <h1>Found Items</h1>
+      <p>Items that have been found and are waiting to be claimed by their owners.</p>
+    </div>
+  </section>
+
+  <!-- Items Listing -->
+  <main class="container">
+    <div class="items-grid" id="found-grid"></div>
+
+    <!-- Optional: message when no found items exist -->
+    <p id="no-items" style="text-align: center; color: #777; display: none; margin: 3rem 0;">
+      No found items reported yet. Help someone by reporting if you find something!
+    </p>
+
+    <div class="text-center" style="margin: 2rem 0;">
+      <a href="report.html" class="btn" style="background: #28a745; padding: 0.9rem 2rem;">
+        Report a Found Item →
+      </a>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>© 2026 Lost & Found Portal • Made for college project • Chidambaram, Tamil Nadu</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/script.js"></script>
+  <script>
+    // Get only found items
+    const foundItems = getItemsByType('found');
+
+    const grid = document.getElementById('found-grid');
+    const noItemsMsg = document.getElementById('no-items');
+
+    if (foundItems.length > 0) {
+      grid.innerHTML = foundItems.map(item => `
+        <div class="card">
+          <img src="${item.image || 'https://via.placeholder.com/300x180?text=No+Image'}" 
+               alt="${item.title}" 
+               class="card-img">
+          <div class="card-body">
+            <span class="badge badge-found">FOUND</span>
+            <h3 class="card-title">${item.title}</h3>
+            <p class="card-text">
+              <strong>Location:</strong> ${item.location}<br>
+              <strong>Date:</strong> ${item.date}
+            </p>
+            <a href="details.html?id=${item.id}" class="btn">View Details</a>
+          </div>
+        </div>
+      `).join('');
+    } else {
+      noItemsMsg.style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>

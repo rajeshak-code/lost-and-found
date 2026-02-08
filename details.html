@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Item Details - Lost & Found Portal</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header>
+    <div class="container nav">
+      <a href="index.html" class="nav-brand">Lost & Found Portal</a>
+      
+      <input type="checkbox" id="nav-toggle" class="nav-toggle">
+      <label for="nav-toggle" class="nav-toggle-label">☰</label>
+
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="lost.html">Lost Items</a></li>
+        <li><a href="found.html">Found Items</a></li>
+        <li><a href="report.html">Report Item</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container" style="max-width: 900px; margin: 3rem auto;">
+
+    <div id="item-detail" class="item-detail" style="display: none;">
+      <img id="detail-img" class="detail-img" alt="Item Image">
+      
+      <div class="detail-content">
+        <span id="detail-badge" class="badge"></span>
+        <h1 id="detail-title" class="card-title" style="margin: 1rem 0;"></h1>
+        
+        <div class="card-text" style="font-size: 1.1rem; margin: 1.5rem 0;">
+          <p><strong>Description:</strong><br><span id="detail-desc"></span></p>
+          <p><strong>Category:</strong> <span id="detail-category"></span></p>
+          <p><strong>Location:</strong> <span id="detail-location"></span></p>
+          <p><strong>Date:</strong> <span id="detail-date"></span></p>
+          <p><strong>Contact:</strong> <span id="detail-contact"></span></p>
+          <p><strong>Status:</strong> <span id="detail-status"></span></p>
+        </div>
+
+        <div style="margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+          <a href="javascript:history.back()" class="btn" style="background: #6c757d;">← Back</a>
+          <a href="report.html" class="btn">Report Similar Item</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Not found message -->
+    <div id="not-found" style="text-align: center; padding: 4rem 1rem; display: none;">
+      <h2>Item Not Found</h2>
+      <p>The item you're looking for doesn't exist or has been removed.</p>
+      <a href="index.html" class="btn" style="margin-top: 1.5rem;">Go to Home</a>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>© 2026 Lost & Found Portal • Made for college project • Chidambaram, Tamil Nadu</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/script.js"></script>
+  <script>
+    // Get item ID from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const itemId = urlParams.get('id');
+
+    const detailSection = document.getElementById('item-detail');
+    const notFoundMsg = document.getElementById('not-found');
+
+    if (itemId) {
+      const item = getItemById(itemId);
+
+      if (item) {
+        // Fill in all details
+        document.getElementById('detail-img').src = item.image || 'https://via.placeholder.com/800x400?text=No+Image';
+        document.getElementById('detail-img').alt = item.title;
+
+        document.getElementById('detail-title').textContent = item.title;
+
+        document.getElementById('detail-desc').textContent = item.description || "No description provided.";
+        document.getElementById('detail-category').textContent = item.category || "Not specified";
+        document.getElementById('detail-location').textContent = item.location;
+        document.getElementById('detail-date').textContent = item.date;
+        document.getElementById('detail-contact').textContent = item.contact || "Contact not provided (for privacy)";
+        document.getElementById('detail-status').textContent = item.status || "Pending";
+
+        // Badge
+        const badge = document.getElementById('detail-badge');
+        if (item.type === 'lost') {
+          badge.textContent = 'LOST';
+          badge.className = 'badge badge-lost';
+        } else {
+          badge.textContent = 'FOUND';
+          badge.className = 'badge badge-found';
+        }
+
+        detailSection.style.display = 'block';
+      } else {
+        notFoundMsg.style.display = 'block';
+      }
+    } else {
+      notFoundMsg.style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>

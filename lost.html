@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lost Items - Lost & Found Portal</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Navbar (same as index.html) -->
+  <header>
+    <div class="container nav">
+      <a href="index.html" class="nav-brand">Lost & Found Portal</a>
+      
+      <input type="checkbox" id="nav-toggle" class="nav-toggle">
+      <label for="nav-toggle" class="nav-toggle-label">☰</label>
+
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="lost.html">Lost Items</a></li>
+        <li><a href="found.html">Found Items</a></li>
+        <li><a href="report.html">Report Item</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Page Header -->
+  <section class="hero">
+    <div class="container">
+      <h1>Lost Items</h1>
+      <p>Items reported as lost in your college, campus or community area.</p>
+    </div>
+  </section>
+
+  <!-- Items Listing -->
+  <main class="container">
+    <div class="items-grid" id="lost-grid"></div>
+
+    <!-- Optional: message when no items -->
+    <p id="no-items" style="text-align: center; color: #777; display: none; margin: 3rem 0;">
+      No lost items reported yet. Be the first to report one!
+    </p>
+
+    <div class="text-center" style="margin: 2rem 0;">
+      <a href="report.html" class="btn" style="background: #dc3545; padding: 0.9rem 2rem;">
+        Report a Lost Item →
+      </a>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>© 2026 Lost & Found Portal • Made for college project • Chidambaram, Tamil Nadu</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/script.js"></script>
+  <script>
+    // Get only lost items
+    const lostItems = getItemsByType('lost');
+
+    const grid = document.getElementById('lost-grid');
+    const noItemsMsg = document.getElementById('no-items');
+
+    if (lostItems.length > 0) {
+      grid.innerHTML = lostItems.map(item => `
+        <div class="card">
+          <img src="${item.image || 'https://via.placeholder.com/300x180?text=No+Image'}" 
+               alt="${item.title}" 
+               class="card-img">
+          <div class="card-body">
+            <span class="badge badge-lost">LOST</span>
+            <h3 class="card-title">${item.title}</h3>
+            <p class="card-text">
+              <strong>Location:</strong> ${item.location}<br>
+              <strong>Date:</strong> ${item.date}
+            </p>
+            <a href="details.html?id=${item.id}" class="btn">View Details</a>
+          </div>
+        </div>
+      `).join('');
+    } else {
+      noItemsMsg.style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lost & Found Portal - Home</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header>
+    <div class="container nav">
+      <a href="index.html" class="nav-brand">Lost & Found Portal</a>
+      
+      <input type="checkbox" id="nav-toggle" class="nav-toggle">
+      <label for="nav-toggle" class="nav-toggle-label">☰</label>
+
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="lost.html">Lost Items</a></li>
+        <li><a href="found.html">Found Items</a></li>
+        <li><a href="report.html">Report Item</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Hero / Welcome Section -->
+  <section class="hero">
+    <div class="container">
+      <h1>Welcome to Lost & Found Portal</h1>
+      <p>Helping people in your college, campus, or community recover lost items and return found belongings quickly.</p>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="container">
+
+    <section class="recent-section">
+      <h2>Recent Lost Items</h2>
+      <div class="items-grid" id="lost-preview"></div>
+      <div class="text-center mt-2">
+        <a href="lost.html" class="btn">View All Lost Items →</a>
+      </div>
+    </section>
+
+    <section class="recent-section">
+      <h2>Recent Found Items</h2>
+      <div class="items-grid" id="found-preview"></div>
+      <div class="text-center mt-2">
+        <a href="found.html" class="btn">View All Found Items →</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer (optional but looks complete) -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Lost & Found Portal • Made for college project • Chidambaram, Tamil Nadu</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/script.js"></script>
+  <script>
+    // Show only 3 most recent items in previews (you can sort by date in data.js later)
+    const lostItems = getItemsByType('lost').slice(0, 3);
+    const foundItems = getItemsByType('found').slice(0, 3);
+
+    // Render previews
+    const lostContainer = document.getElementById('lost-preview');
+    const foundContainer = document.getElementById('found-preview');
+
+    if (lostContainer) {
+      lostContainer.innerHTML = lostItems.map(item => `
+        <div class="card">
+          <img src="${item.image || 'https://via.placeholder.com/300x180?text=No+Image'}" alt="${item.title}" class="card-img">
+          <div class="card-body">
+            <span class="badge badge-lost">LOST</span>
+            <h3 class="card-title">${item.title}</h3>
+            <p class="card-text">
+              <strong>Location:</strong> ${item.location}<br>
+              <strong>Date:</strong> ${item.date}
+            </p>
+            <a href="details.html?id=${item.id}" class="btn">View Details</a>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    if (foundContainer) {
+      foundContainer.innerHTML = foundItems.map(item => `
+        <div class="card">
+          <img src="${item.image || 'https://via.placeholder.com/300x180?text=No+Image'}" alt="${item.title}" class="card-img">
+          <div class="card-body">
+            <span class="badge badge-found">FOUND</span>
+            <h3 class="card-title">${item.title}</h3>
+            <p class="card-text">
+              <strong>Location:</strong> ${item.location}<br>
+              <strong>Date:</strong> ${item.date}
+            </p>
+            <a href="details.html?id=${item.id}" class="btn">View Details</a>
+          </div>
+        </div>
+      `).join('');
+    }
+  </script>
+
+</body>
+</html>

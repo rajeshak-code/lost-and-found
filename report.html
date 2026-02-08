@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Report Item - Lost & Found Portal</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header>
+    <div class="container nav">
+      <a href="index.html" class="nav-brand">Lost & Found Portal</a>
+      
+      <input type="checkbox" id="nav-toggle" class="nav-toggle">
+      <label for="nav-toggle" class="nav-toggle-label">☰</label>
+
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="lost.html">Lost Items</a></li>
+        <li><a href="found.html">Found Items</a></li>
+        <li><a href="report.html">Report Item</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container" style="max-width: 700px; margin: 4rem auto;">
+
+    <section class="hero" style="padding: 2rem 0; text-align: center;">
+      <h1>Report a Lost or Found Item</h1>
+      <p>Help someone recover their belongings — or let others know you found something.</p>
+    </section>
+
+    <form id="report-form" class="form">
+      <div class="form-group">
+        <label>Type of Report *</label>
+        <div style="display: flex; gap: 2rem; margin: 0.8rem 0;">
+          <label>
+            <input type="radio" name="type" value="lost" required checked>
+            Lost Item
+          </label>
+          <label>
+            <input type="radio" name="type" value="found">
+            Found Item
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="title">Item Name / Title *</label>
+        <input type="text" id="title" name="title" required placeholder="e.g. Black Samsung Galaxy Earbuds">
+      </div>
+
+      <div class="form-group">
+        <label for="category">Category</label>
+        <select id="category" name="category">
+          <option value="">Select category (optional)</option>
+          <option value="Electronics">Electronics</option>
+          <option value="Accessories">Accessories / Wallet / Bag</option>
+          <option value="Clothing">Clothing / Shoes</option>
+          <option value="Documents">Documents / ID / Cards</option>
+          <option value="Jewelry">Jewelry / Watch</option>
+          <option value="Books">Books / Stationery</option>
+          <option value="Others">Others</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description *</label>
+        <textarea id="description" name="description" rows="4" required placeholder="Color, brand, special marks, condition, what's inside (if applicable)..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="location">Location where lost/found *</label>
+        <input type="text" id="location" name="location" required placeholder="e.g. College Canteen, Library Block B, Bus Stop near Main Gate">
+      </div>
+
+      <div class="form-group">
+        <label for="date">Date (approx) *</label>
+        <input type="date" id="date" name="date" required>
+      </div>
+
+      <div class="form-group">
+        <label for="contact">Your Contact Info (Email / Phone) *</label>
+        <input type="text" id="contact" name="contact" required placeholder="someone@example.com or 98765 43210">
+      </div>
+
+      <div class="form-group">
+        <label for="image-url">Image URL (optional - use placeholder or imgur link for demo)</label>
+        <input type="url" id="image-url" name="image" placeholder="https://i.imgur.com/abc123.jpg">
+        <small style="color: #666; display: block; margin-top: 0.4rem;">
+          For demo: you can use https://via.placeholder.com/400?text=Your+Item
+        </small>
+      </div>
+
+      <div class="form-group text-center" style="margin-top: 2.5rem;">
+        <button type="submit" class="btn" style="padding: 1rem 2.5rem; font-size: 1.1rem;">
+          Submit Report
+        </button>
+      </div>
+    </form>
+
+    <!-- Success / Error Messages -->
+    <div id="success-msg" style="display: none; background: #d4edda; color: #155724; padding: 1.5rem; border-radius: 8px; margin-top: 2rem; text-align: center;">
+      <h3>Thank You!</h3>
+      <p>Your item has been reported successfully.<br>
+      <a href="index.html">Go back to Home</a> or <a href="lost.html">view Lost Items</a></p>
+    </div>
+
+    <div id="error-msg" style="display: none; background: #f8d7da; color: #721c24; padding: 1.5rem; border-radius: 8px; margin-top: 2rem; text-align: center;">
+      <h3>Oops!</h3>
+      <p>Please fill all required fields.</p>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>© 2026 Lost & Found Portal • Made for college project • Chidambaram, Tamil Nadu</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script>
+    // Simple localStorage simulation for new reports (demo only)
+    const form = document.getElementById('report-form');
+    const successMsg = document.getElementById('success-msg');
+    const errorMsg = document.getElementById('error-msg');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      // Basic validation (HTML5 required + extra check)
+      if (!form.checkValidity()) {
+        errorMsg.style.display = 'block';
+        successMsg.style.display = 'none';
+        form.reportValidity();
+        return;
+      }
+
+      errorMsg.style.display = 'none';
+
+      // Collect form data
+      const formData = new FormData(form);
+      const newItem = {
+        id: Date.now(), // simple unique id
+        type: formData.get('type'),
+        title: formData.get('title'),
+        category: formData.get('category'),
+        description: formData.get('description'),
+        location: formData.get('location'),
+        date: formData.get('date'),
+        contact: formData.get('contact'),
+        image: formData.get('image') || 'https://via.placeholder.com/300x180?text=New+Item',
+        status: 'Pending'
+      };
+
+      // Save to localStorage (demo persistence in same browser)
+      let storedItems = JSON.parse(localStorage.getItem('lostFoundItems') || '[]');
+      storedItems.push(newItem);
+      localStorage.setItem('lostFoundItems', JSON.stringify(storedItems));
+
+      // Show success
+      successMsg.style.display = 'block';
+      form.reset();
+
+      // Optional: auto-scroll to success message
+      successMsg.scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // Bonus: Load from localStorage on page load (combine with static data.js if you want)
+    window.addEventListener('load', () => {
+      const stored = localStorage.getItem('lostFoundItems');
+      if (stored) {
+        console.log('Loaded ' + JSON.parse(stored).length + ' user-submitted items from localStorage');
+      }
+    });
+  </script>
+
+</body>
+</html>
