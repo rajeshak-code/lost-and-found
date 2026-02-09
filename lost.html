@@ -58,36 +58,33 @@
   </footer>
 
   <!-- Scripts -->
-  <script src="js/data.js"></script>
-  <script src="js/script.js"></script>
-  <script>
-    // Get only lost items
-    const lostItems = getItemsByType('lost');
+<script src="js/data.js"></script>
+<script src="js/script.js"></script>
+<script>
+  const lostItems = getItemsByType('lost');
+  const grid = document.getElementById('lost-grid');
+  const noItemsMsg = document.getElementById('no-items');
 
-    const grid = document.getElementById('lost-grid');
-    const noItemsMsg = document.getElementById('no-items');
-
-    if (lostItems.length > 0) {
-      grid.innerHTML = lostItems.map(item => `
-        <div class="card">
-          <img src="${item.image || 'https://via.placeholder.com/300x180?text=No+Image'}" 
-               alt="${item.title}" 
-               class="card-img">
-          <div class="card-body">
-            <span class="badge badge-lost">LOST</span>
-            <h3 class="card-title">${item.title}</h3>
-            <p class="card-text">
-              <strong>Location:</strong> ${item.location}<br>
-              <strong>Date:</strong> ${item.date}
-            </p>
-            <a href="details.html?id=${item.id}" class="btn">View Details</a>
-          </div>
+  if (lostItems.length > 0) {
+    grid.innerHTML = lostItems.map(item => `
+      <div class="card">
+        <img src="${item.image || 'https://via.placeholder.com/300x180?text=No+Image'}" alt="${item.title}" class="card-img">
+        <div class="card-body">
+          <span class="badge badge-lost">LOST</span>
+          <h3 class="card-title">${item.title}</h3>
+          <p class="card-text">
+            <strong>Location:</strong> ${item.location}<br>
+            <strong>Date:</strong> ${item.date}
+          </p>
+          <a href="details.html?id=${item.id}" class="btn">View Details</a>
         </div>
-      `).join('');
-    } else {
-      noItemsMsg.style.display = 'block';
-    }
-  </script>
+      </div>
+    `).join('');
+    noItemsMsg.style.display = 'none';
+  } else {
+    noItemsMsg.style.display = 'block';
+  }
+</script>
 
 </body>
 </html>

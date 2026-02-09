@@ -58,56 +58,63 @@
   <!-- Footer (optional but looks complete) -->
   <footer>
     <div class="container">
-      <p>&copy; 2026 Lost & Found Portal • Made for college project • Chidambaram, Tamil Nadu</p>
+      <p>&copy; 2026 Lost & Found Portal • Made for college project • Coimbatore, Tamil Nadu</p>
     </div>
   </footer>
 
-  <!-- Scripts -->
-  <script src="js/data.js"></script>
-  <script src="js/script.js"></script>
-  <script>
-    // Show only 3 most recent items in previews (you can sort by date in data.js later)
-    const lostItems = getItemsByType('lost').slice(0, 3);
-    const foundItems = getItemsByType('found').slice(0, 3);
+<!-- Scripts -->
+<script src="js/data.js"></script>
+<script src="js/script.js"></script>
+<script>
+  // Now uses updated getItemsByType() which includes user reports!
+  const lostItems = getItemsByType('lost').slice(0, 3);  // Shows newest 3 (sample + user)
+  const foundItems = getItemsByType('found').slice(0, 3);
 
-    // Render previews
-    const lostContainer = document.getElementById('lost-preview');
-    const foundContainer = document.getElementById('found-preview');
+  const lostContainer = document.getElementById('lost-preview');
+  const foundContainer = document.getElementById('found-preview');
 
-    if (lostContainer) {
-      lostContainer.innerHTML = lostItems.map(item => `
-        <div class="card">
-          <img src="${item.image || 'https://via.placeholder.com/300x180?text=No+Image'}" alt="${item.title}" class="card-img">
-          <div class="card-body">
-            <span class="badge badge-lost">LOST</span>
-            <h3 class="card-title">${item.title}</h3>
-            <p class="card-text">
-              <strong>Location:</strong> ${item.location}<br>
-              <strong>Date:</strong> ${item.date}
-            </p>
-            <a href="details.html?id=${item.id}" class="btn">View Details</a>
-          </div>
+  // Lost previews
+  if (lostItems.length > 0) {
+    lostContainer.innerHTML = lostItems.map(item => `
+      <div class="card">
+        <img src="${item.image || 'https://via.placeholder.com/300x180?text=No+Image'}" alt="${item.title}" class="card-img">
+        <div class="card-body">
+          <span class="badge badge-lost">LOST</span>
+          <h3 class="card-title">${item.title}</h3>
+          <p class="card-text">
+            <strong>Location:</strong> ${item.location}<br>
+            <strong>Date:</strong> ${item.date}
+          </p>
+          <a href="details.html?id=${item.id}" class="btn">View Details</a>
         </div>
-      `).join('');
-    }
+      </div>
+    `).join('');
+  } else {
+    lostContainer.innerHTML = '<p style="text-align:center; color:#777; grid-column:1/-1;">No lost items yet</p>';
+  }
 
-    if (foundContainer) {
-      foundContainer.innerHTML = foundItems.map(item => `
-        <div class="card">
-          <img src="${item.image || 'https://via.placeholder.com/300x180?text=No+Image'}" alt="${item.title}" class="card-img">
-          <div class="card-body">
-            <span class="badge badge-found">FOUND</span>
-            <h3 class="card-title">${item.title}</h3>
-            <p class="card-text">
-              <strong>Location:</strong> ${item.location}<br>
-              <strong>Date:</strong> ${item.date}
-            </p>
-            <a href="details.html?id=${item.id}" class="btn">View Details</a>
-          </div>
+  // Found previews
+  if (foundItems.length > 0) {
+    foundContainer.innerHTML = foundItems.map(item => `
+      <div class="card">
+        <img src="${item.image || 'https://via.placeholder.com/300x180?text=No+Image'}" alt="${item.title}" class="card-img">
+        <div class="card-body">
+          <span class="badge badge-found">FOUND</span>
+          <h3 class="card-title">${item.title}</h3>
+          <p class="card-text">
+            <strong>Location:</strong> ${item.location}<br>
+            <strong>Date:</strong> ${item.date}
+          </p>
+          <a href="details.html?id=${item.id}" class="btn">View Details</a>
         </div>
-      `).join('');
-    }
-  </script>
+      </div>
+    `).join('');
+  } else {
+    foundContainer.innerHTML = '<p style="text-align:center; color:#777; grid-column:1/-1;">No found items yet</p>';
+  }
+
+  console.log('Home loaded:', lostItems.length, 'lost +', foundItems.length, 'found items');
+</script>
 
 </body>
 </html>

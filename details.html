@@ -68,52 +68,47 @@
     </div>
   </footer>
 
-  <!-- Scripts -->
-  <script src="js/data.js"></script>
-  <script src="js/script.js"></script>
-  <script>
-    // Get item ID from URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const itemId = urlParams.get('id');
+<!-- Scripts -->
+<script src="js/data.js"></script>
+<script src="js/script.js"></script>
+<script>
+  // Get item ID from URL (now works with user-submitted IDs too!)
+  const urlParams = new URLSearchParams(window.location.search);
+  const itemId = urlParams.get('id');
 
-    const detailSection = document.getElementById('item-detail');
-    const notFoundMsg = document.getElementById('not-found');
+  const detailSection = document.getElementById('item-detail');
+  const notFoundMsg = document.getElementById('not-found');
 
-    if (itemId) {
-      const item = getItemById(itemId);
+  if (itemId) {
+    // Updated getItemById now searches BOTH static + localStorage items
+    const item = getItemById(itemId);
 
-      if (item) {
-        // Fill in all details
-        document.getElementById('detail-img').src = item.image || 'https://via.placeholder.com/800x400?text=No+Image';
-        document.getElementById('detail-img').alt = item.title;
+    if (item) {
+      // Fill all details
+      document.getElementById('detail-img').src = item.image || 'https://via.placeholder.com/800x400?text=No+Image';
+      document.getElementById('detail-img').alt = item.title;
+      document.getElementById('detail-title').textContent = item.title;
+      document.getElementById('detail-desc').textContent = item.description || "No description provided.";
+      document.getElementById('detail-category').textContent = item.category || "Not specified";
+      document.getElementById('detail-location').textContent = item.location;
+      document.getElementById('detail-date').textContent = item.date;
+      document.getElementById('detail-contact').textContent = item.contact || "Contact not provided";
+      document.getElementById('detail-status').textContent = item.status || "Pending";
 
-        document.getElementById('detail-title').textContent = item.title;
+      // Badge styling
+      const badge = document.getElementById('detail-badge');
+      badge.textContent = getBadgeText(item.type);
+      badge.className = 'badge ' + getBadgeClass(item.type);
 
-        document.getElementById('detail-desc').textContent = item.description || "No description provided.";
-        document.getElementById('detail-category').textContent = item.category || "Not specified";
-        document.getElementById('detail-location').textContent = item.location;
-        document.getElementById('detail-date').textContent = item.date;
-        document.getElementById('detail-contact').textContent = item.contact || "Contact not provided (for privacy)";
-        document.getElementById('detail-status').textContent = item.status || "Pending";
-
-        // Badge
-        const badge = document.getElementById('detail-badge');
-        if (item.type === 'lost') {
-          badge.textContent = 'LOST';
-          badge.className = 'badge badge-lost';
-        } else {
-          badge.textContent = 'FOUND';
-          badge.className = 'badge badge-found';
-        }
-
-        detailSection.style.display = 'block';
-      } else {
-        notFoundMsg.style.display = 'block';
-      }
+      detailSection.style.display = 'block';
     } else {
       notFoundMsg.style.display = 'block';
     }
-  </script>
+  } else {
+    notFoundMsg.style.display = 'block';
+  }
 
+  console.log('Details loaded for ID:', itemId);
+</script>
 </body>
 </html>

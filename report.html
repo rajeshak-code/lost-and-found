@@ -125,62 +125,53 @@
   </footer>
 
   <!-- Scripts -->
-  <script src="js/data.js"></script>
-  <script>
-    // Simple localStorage simulation for new reports (demo only)
-    const form = document.getElementById('report-form');
-    const successMsg = document.getElementById('success-msg');
-    const errorMsg = document.getElementById('error-msg');
+<script src="js/data.js"></script>
+<script src="js/script.js"></script>
+<script>
+  const form = document.getElementById('report-form');
+  const successMsg = document.getElementById('success-msg');
+  const errorMsg = document.getElementById('error-msg');
 
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
 
-      // Basic validation (HTML5 required + extra check)
-      if (!form.checkValidity()) {
-        errorMsg.style.display = 'block';
-        successMsg.style.display = 'none';
-        form.reportValidity();
-        return;
-      }
+    if (!form.checkValidity()) {
+      errorMsg.style.display = 'block';
+      successMsg.style.display = 'none';
+      form.reportValidity();
+      return;
+    }
 
-      errorMsg.style.display = 'none';
+    errorMsg.style.display = 'none';
 
-      // Collect form data
-      const formData = new FormData(form);
-      const newItem = {
-        id: Date.now(), // simple unique id
-        type: formData.get('type'),
-        title: formData.get('title'),
-        category: formData.get('category'),
-        description: formData.get('description'),
-        location: formData.get('location'),
-        date: formData.get('date'),
-        contact: formData.get('contact'),
-        image: formData.get('image') || 'https://via.placeholder.com/300x180?text=New+Item',
-        status: 'Pending'
-      };
+    const formData = new FormData(form);
+    const selectedType = formData.get('type');
 
-      // Save to localStorage (demo persistence in same browser)
-      let storedItems = JSON.parse(localStorage.getItem('lostFoundItems') || '[]');
-      storedItems.push(newItem);
-      localStorage.setItem('lostFoundItems', JSON.stringify(storedItems));
+    console.log('Selected type:', selectedType); // ← debug: should show "lost" or "found"
 
-      // Show success
-      successMsg.style.display = 'block';
-      form.reset();
+    const newItem = {
+      id: 'user-' + Date.now(),
+      type: selectedType,               // must be exactly "lost" or "found"
+      title: formData.get('title'),
+      category: formData.get('category') || null,
+      description: formData.get('description'),
+      location: formData.get('location'),
+      date: formData.get('date'),
+      contact: formData.get('contact'),
+      image: formData.get('image') || 'https://via.placeholder.com/300x180?text=New+Item',
+      status: 'Pending'
+    };
 
-      // Optional: auto-scroll to success message
-      successMsg.scrollIntoView({ behavior: 'smooth' });
-    });
+    let reports = JSON.parse(localStorage.getItem('lostFoundItems') || '[]');
+    reports.push(newItem);
+    localStorage.setItem('lostFoundItems', JSON.stringify(reports));
 
-    // Bonus: Load from localStorage on page load (combine with static data.js if you want)
-    window.addEventListener('load', () => {
-      const stored = localStorage.getItem('lostFoundItems');
-      if (stored) {
-        console.log('Loaded ' + JSON.parse(stored).length + ' user-submitted items from localStorage');
-      }
-    });
-  </script>
+    successMsg.style.display = 'block';
+    form.reset();
+    successMsg.scrollIntoView({ behavior: 'smooth' });
 
+    console.log('New item saved:', newItem);
+  });
+</script>
 </body>
 </html>
